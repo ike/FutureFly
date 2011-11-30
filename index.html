@@ -142,44 +142,70 @@
     // FutureFly Loader
 
     function FutureFly() {
-      this.hidePictures = new Style();
+      this.support = true;
+
+      // Add feature detection needed for loading inline JS
+
+      // Error callback for child classes.
+      this.error = function(error, stop) {
+        if (stop) this.support = false;
+        console.log(e);
+      }
+
+      // Attempt to hide all picture elements.
+      this.hidePictures = new Style(this);
+      this.hidePictures.init('picture img, picture source { display: none; }', 'hidePictures');
+
+      // If support is still true, load the inline JS
+      if (this.support) {
+        this.body = document.getElementsByTagName('body')[0];
+        this.flyScript = document.createElement('script');
+        this.flyScript.src = './futurefly.js';
+        this.flyScript.type = 'text/javascript';
+        this.body.appendChild(this.flyScript);
+      } 
+
+
     }
 
     // Add and access style tags
-    function Style() {
-      this.head = document.getElementsByTagName('head')[0];
-      this.style = document.createElement('style');
+    function Style(parent) {
+      if (parent) this.parent = parent;
+      if (document.getElementsByTagName && document.createElement && document.createTextNode) {
+        this.head = document.getElementsByTagName('head')[0];
+        this.style = document.createElement('style');
 
-      this.init = function(rules) {
-        this.rules = document.createTextNode(rules);
-        this.style.type = 'text/css';
-        this.style.setAttribute('rel', 'hidePictures');
+        this.init = function(rules, rel) {
+          this.rules = document.createTextNode(rules);
+          this.style.type = 'text/css';
+          this.style.setAttribute('rel', rel);
 
-        if(this.style.styleSheet) {
-          this.style.styleSheet.cssText = this.rules.nodeValue;
-        } else { this.style.appendChild(this.rules); }
+          if(this.style.styleSheet) {
+            this.style.styleSheet.cssText = this.rules.nodeValue;
+          } else { this.style.appendChild(this.rules); }
 
-        this.head.appendChild(this.style);
-      }
+          this.head.appendChild(this.style);
+        }
 
-      this.clear = function() {
-        this.style.innerHTML = '';
-      }
+        this.clear = function() {
+          this.style.innerHTML = '';
+        }
 
-      this.add = function(rules) {
-        // Append rules to this.rules and refresh content of this.style
-        this.rules.appendData(rules);
+        this.add = function(rules) {
+          // Append rules to this.rules and refresh content of this.style
+          this.rules.appendData(rules);
 
-        if(this.style.styleSheet) {
-          this.style.styleSheet.cssText = this.rules.nodeValue;
-        } else { this.style.appendChild(this.rules); }
+          if(this.style.styleSheet) {
+            this.style.styleSheet.cssText = this.rules.nodeValue;
+          } else { this.style.appendChild(this.rules); }
+        }
+      } else {
+        this.parent.error('Insufficient JS support.', false)
       }
     }
 
     // Initialize FutureFly
     var F = new FutureFly();
-
-    F.hidePictures.init('picture img, picture source { display: none; }');
 
   </script>
 
