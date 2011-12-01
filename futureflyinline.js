@@ -1,4 +1,4 @@
-
+(function() {
 	
 	var pictures = document.getElementsByTagName('picture');
 
@@ -29,4 +29,6 @@
 		
 	}
 
-	F.hidePictures.clear();
+} )();
+
+F.hidePictures.clear();

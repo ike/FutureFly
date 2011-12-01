@@ -8,9 +8,10 @@
 
 // FutureFly loader. Determines JS support
 function FutureFly() {
-	this.support = true;
 
-	// Add feature detection needed for loading inline JS
+	this.support = (
+			document.getElementsByTagName
+		) ? true : false;
 
 	// Error callback for child classes.
 	this.error = function(error, stop) {

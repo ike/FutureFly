@@ -94,6 +94,11 @@ hr {
     border: none;
 }
 
+header {
+    background: lightblue;
+    padding: 5px;
+}
+
 @media screen and (max-width: 420px) {
     body {
         max-width: 100%;        
@@ -106,5 +111,14 @@ hr {
 
     #results {
         width: 32px;
+    }
+
+    header h4 {
+        text-align: right;
+    }
+
+    header h1, header h4 {
+        display: inline;
+        vertical-align: middle;
     }
 }
